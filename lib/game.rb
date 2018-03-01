@@ -10,6 +10,10 @@ class Game
     @hum = "O" # the user's marker
   end
 
+  def current_player
+    @board.avaiable_spaces.length.even? ? 'O' : 'X'
+  end
+
   def move spot, move_symbol
     new_board = gen_new_board(@board.state, spot, move_symbol)
     update_history @board
@@ -17,8 +21,9 @@ class Game
   end
 
   def gen_new_board board_state, spot, move_symbol
-    board_state[spot] = move_symbol
-    board_class.new board_state
+    new_board_state = board_state.dup
+    new_board_state[spot] = move_symbol
+    board_class.new new_board_state
   end
 
   def update_history board
@@ -47,7 +52,11 @@ class Game
 
   def tie?
     return false if over?
-    @board.avaiable_slots.empty?
+    @board.avaiable_spots.empty?
+  end
+
+  def winner? mark
+    winning? @board.state, mark
   end
 
 end
