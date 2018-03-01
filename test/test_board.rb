@@ -7,12 +7,12 @@ class TestBoard < Minitest::Test
     @full_board = Board.new ['O', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O']
   end
 
-  def test_empty_board_has_9_avaiable_slots
-    assert_equal 9, @empty_board.avaiable_slots.length
+  def test_empty_board_has_9_avaiable_spots
+    assert_equal 9, @empty_board.avaiable_spots.length
   end
 
-  def test_full_board_has_no_avaiable_slots
-    assert_equal @full_board.avaiable_slots.empty?, true
+  def test_full_board_has_no_avaiable_spots
+    assert_equal @full_board.avaiable_spots.empty?, true
   end
 
   def test_board_validates_contents
