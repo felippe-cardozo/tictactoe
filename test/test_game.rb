@@ -37,12 +37,12 @@ class TestGame < Minitest::Test
   end
 
   def test_game_is_over_evaluetes_correctly
-    assert_equal @game.game_is_over?, false
+    assert_equal @game.over?, false
     winning_board = Board.new ["X", "O", "X", "O", "X", 5, "X", "O", 8]
     tied_board = Board.new ["X", "O", "X", "O", "O", "X", "O", "X", "O"]
     @game.board = winning_board
-    assert_equal @game.game_is_over?, true
+    assert_equal @game.over?, true
     @game.board = tied_board
-    assert_equal @game.game_is_over?, false
+    assert_equal @game.over?, false
   end
 end

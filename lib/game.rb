@@ -30,21 +30,23 @@ class Game
     @board = @board_history.last
   end
 
-  def game_is_over?
-    b = @board.state
+  def winning? b, move_symbol
+    [b[0], b[1], b[2]].uniq == [move_symbol] ||
+    [b[3], b[4], b[5]].uniq == [move_symbol] ||
+    [b[6], b[7], b[8]].uniq == [move_symbol] ||
+    [b[0], b[3], b[6]].uniq == [move_symbol] ||
+    [b[1], b[4], b[7]].uniq == [move_symbol] ||
+    [b[2], b[5], b[8]].uniq == [move_symbol] ||
+    [b[0], b[4], b[8]].uniq == [move_symbol] ||
+    [b[2], b[4], b[6]].uniq == [move_symbol]
+  end
 
-    [b[0], b[1], b[2]].uniq.length == 1 ||
-    [b[3], b[4], b[5]].uniq.length == 1 ||
-    [b[6], b[7], b[8]].uniq.length == 1 ||
-    [b[0], b[3], b[6]].uniq.length == 1 ||
-    [b[1], b[4], b[7]].uniq.length == 1 ||
-    [b[2], b[5], b[8]].uniq.length == 1 ||
-    [b[0], b[4], b[8]].uniq.length == 1 ||
-    [b[2], b[4], b[6]].uniq.length == 1
+  def over?
+    winning?(@board.state, 'O') || winning?(@board.state, 'X')
   end
 
   def tie?
-    return false if game_is_over?
+    return false if over?
     @board.avaiable_slots.empty?
   end
 
