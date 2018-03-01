@@ -5,7 +5,7 @@ class Board
     @state = state
   end
 
-  def avaiable_slots
+  def avaiable_spots
     @state.select{|i| i.is_a? Integer}
   end
 
