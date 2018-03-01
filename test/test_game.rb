@@ -12,17 +12,17 @@ class TestGame < Minitest::Test
   end
 
   def test_move_is_made_on_call
-    @game.move(4)
+    @game.move(4, 'O')
     assert_equal @game.board.state[4], 'O'
-    @game.move(5)
+    @game.move(5, 'X')
     assert_equal @game.board.state[5], 'X'
   end
 
   def test_game_updates_game_history
     assert_equal @game.board_history.length, 1
-    @game.move(1)
+    @game.move(1, 'O')
     assert_equal @game.board_history.length, 2
-    @game.move(2)
+    @game.move(2, 'X')
     assert_equal @game.board_history.length, 3
   end
 

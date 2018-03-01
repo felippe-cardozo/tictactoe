@@ -10,16 +10,24 @@ class Game
     @hum = "O" # the user's marker
   end
 
-  def move spot
-    move_symbol = @board_history.length.even? ? 'X' : 'O' 
+  def move spot, move_symbol
+    new_board = gen_new_board(@board.state, spot, move_symbol)
     update_history @board
-    new_board = @board.state
-    new_board[spot] = move_symbol
-    @board = @board_class.new new_board
+    @board = new_board
+  end
+
+  def gen_new_board board_state, spot, move_symbol
+    board_state[spot] = move_symbol
+    board_class.new board_state
   end
 
   def update_history board
     @board_history << board
+  end
+
+  def undo
+    @board_history.pop
+    @board = @board_history.last
   end
 
   def game_is_over?
