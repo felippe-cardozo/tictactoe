@@ -3,10 +3,12 @@ require_relative '../lib/player'
 require_relative '../lib/game'
 require_relative '../lib/board'
 
-class TestBoard < Minitest::Test
+class TestPlayer < Minitest::Test
   def setup
-    @game = Game.new Board
-    @player = Player.new @game, 'X'
+    @game = Game.new
+    @game.board_class = Board
+    @game.new_game
+    @player = Player.new @game
   end
 
   def test_player_plays_in_the_center_if_board_is_empty_and_mode_is_hard

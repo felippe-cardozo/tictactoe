@@ -1,16 +1,15 @@
 class Player
-  attr_accessor :game, :mark
-  def initialize game_instance, mark, mode='HARD'
+  attr_accessor :game, :level
+  def initialize game_instance, level='HARD'
     @game = game_instance
-    @mark = mark
-    @mode = mode
+    @level = level
   end
 
-  def get_move
-    moves = {:hard => get_best_move(@game.board, @mark),
+  def get_move mark=@game.current_player
+    moves = {:hard => get_best_move(@game.board, mark),
              :easy => @game.board.avaiable_spots.sample}
-    return moves[:hard] if @mode == 'HARD'
-    return moves[:easy] if @mode == 'EASY'
+    return moves[:hard] if @level == 'HARD'
+    return moves[:easy] if @level == 'EASY'
     return moves.values.sample
   end
 
