@@ -7,8 +7,7 @@ require_relative '../lib/ui'
 
 class TestUI < Minitest::Test
   def setup
-    @game = Game.new
-    @ui = UI.new @game, Board, Player
+    @ui = UI.new Game, Board, Player
   end
 
   def set_input input
