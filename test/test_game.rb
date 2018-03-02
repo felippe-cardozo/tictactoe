@@ -52,7 +52,7 @@ class TestGame < Minitest::Test
     @game.board = winning_board
     assert_equal @game.over?, true
     @game.board = tied_board
-    assert_equal @game.over?, false
+    assert_equal @game.over?, true
   end
 
   def test_undo_works

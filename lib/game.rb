@@ -57,12 +57,16 @@ class Game
     [b[2], b[4], b[6]].uniq == [move_symbol]
   end
 
-  def over?
+  def win?
     winning?(@board.state, 'O') || winning?(@board.state, 'X')
+  end
+  
+  def over?
+    win? || tie?
   end
 
   def tie?
-    return false if over?
+    return false if win?
     legal_moves.empty?
   end
 
