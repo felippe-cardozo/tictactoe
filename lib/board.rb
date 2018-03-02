@@ -15,6 +15,7 @@ class Board
     mid = " " + @state[3..5].join(' | ') + " " + new_line
     bot = " " + @state[6..8].join(' | ') + " "
     puts top + mid + bot
+    puts "\n"
   end
 
   private
