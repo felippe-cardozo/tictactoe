@@ -1,20 +1,22 @@
 class Game
-  attr_accessor :board, :board_history
-  attr_reader :board_class
+  attr_accessor :board_class, :board, :history, :redo_history
+  attr_reader :current_player
 
-  def initialize board_class
-    @board_class = board_class
-    @board = board_class.new
-    @board_history = [@board]
-    @com = "X" # the computer's marker
-    @hum = "O" # the user's marker
+  def initialize
+    @history = []
+    @redo_history = []
+  end
+
+  def new_game
+    @board = @board_class.new
+    @history << @board
   end
 
   def current_player
-    @board.avaiable_spaces.length.even? ? 'O' : 'X'
+    legal_moves.length.even? ? 'X' : 'O'
   end
 
-  def move spot, move_symbol
+  def move spot, move_symbol=self.current_player
     new_board = gen_new_board(@board.state, spot, move_symbol)
     update_history @board
     @board = new_board
@@ -23,16 +25,25 @@ class Game
   def gen_new_board board_state, spot, move_symbol
     new_board_state = board_state.dup
     new_board_state[spot] = move_symbol
-    board_class.new new_board_state
+    @board_class.new new_board_state
+  end
+
+  def legal_moves
+    @board.avaiable_spots
   end
 
   def update_history board
-    @board_history << board
+    @history << board
   end
 
   def undo
-    @board_history.pop
-    @board = @board_history.last
+    @redo_history << @history.pop
+    @board = @history.last
+  end
+
+  def redo
+    @history << @redo_history.pop
+    @board = @history.last
   end
 
   def winning? b, move_symbol
@@ -52,7 +63,7 @@ class Game
 
   def tie?
     return false if over?
-    @board.avaiable_spots.empty?
+    legal_moves.empty?
   end
 
   def winner? mark
