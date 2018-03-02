@@ -31,9 +31,9 @@ class UI
     puts "select a mode by number:\n1 = 'Player Vs Computer'\n"\
       "2 = 'Player Vs Player'\n3 = 'Computer Vs Computer'"
     modes = {1 => 'PVC', 2 => 'PVP', 3 => 'CVC'}
-    mode = get_user_input.to_i
-    ask_for_mode unless (1..3).include? mode
-    return modes[mode]
+    mode = get_user_input
+    ask_for_mode unless ('1'..'3').include? mode
+    return modes[mode.to_i]
   end
 
   def ask_for_level
@@ -46,6 +46,8 @@ class UI
 
   def ask_for_move
     puts "Choose your move"
-    get_user_input.to_i
+    move = get_user_input
+    ask_for_move unless ("0".."9").include? move
+    move.to_i
   end
 end
