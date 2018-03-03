@@ -112,10 +112,12 @@ class UI
     end
 
     def ask_for_level
-      puts "select a difficult level\n'h' for Hard\n'm' for Medium\n'e' for Easy"
-      levels = {'h' => 'HARD', 'm' => 'MEDIUM', 'e' => 'EASY'}
+      puts "select a difficult level\n'v' for Very Hard\n"\
+        "'h' for Hard\n'm' for Medium\n'e' for Easy"
+      levels = {'v' => 'VERY_HARD', 'h' => 'HARD',
+                'm' => 'MEDIUM', 'e' => 'EASY'}
       level = get_user_input
-      ask_for_level unless 'hmeHME'.include? level
+      ask_for_level unless 'vhmeVHME'.include? level
       return levels[level.downcase]
     end
 

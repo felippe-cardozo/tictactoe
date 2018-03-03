@@ -1,5 +1,6 @@
 class Player
   attr_accessor :game, :level
+  attr_reader :best_move
   def initialize game_instance, level='HARD'
     @game = game_instance
     @level = level
@@ -7,13 +8,20 @@ class Player
 
   def get_move mark=@game.current_player
     moves = {:hard => get_best_move(@game.board, mark),
+             :very_hard => get_best_min_max_move(@game, mark),
              :easy => @game.board.avaiable_spots.sample}
     return moves[:hard] if @level == 'HARD'
     return moves[:easy] if @level == 'EASY'
+    return moves[:very_hard] if @level == 'VERY_HARD'
     return moves.values.sample
   end
 
-  def get_best_move(board, player)
+  def get_best_min_max_move game=@game, player=@game.current_player
+    min_max game
+    @best_move
+  end
+
+  def get_best_move(board=@game.board, player=@game.current_player)
     opponent = player == 'X' ? 'O' : 'X'
     best_move =  win_next(board, player)
     return best_move if best_move
@@ -30,5 +38,34 @@ class Player
       return spot if @game.winning? possible_board, player
     end
     return best
+  end
+
+  def score game
+    return 10 if game.winner? 'X'
+    return -10 if game.winner? 'O'
+    return 0
+  end
+
+  def min_max game, depth=6
+    return score(game) if game.over?
+    return score(game) if depth < 1
+    scores = {}
+    depth -= 1
+    game.legal_moves.each do |move|
+      possible_game = game.dup
+      possible_game.move(move)
+      scores[move] = min_max(possible_game, depth=depth)
+    end
+
+    @best_move, best_score = find_best_move(game.current_player, scores)
+    return best_score
+  end
+
+  def find_best_move(current_player, scores)
+    if current_player == 'X'
+      scores.max_by {|k, v| v}
+    else
+      scores.min_by {|k, v| v}
+    end
   end
 end
