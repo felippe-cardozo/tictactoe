@@ -1,10 +1,9 @@
 class Game
-  attr_accessor :board_class, :board, :history, :redo_history
+  attr_accessor :board_class, :board, :history
   attr_reader :current_player
 
   def initialize
     @history = []
-    @redo_history = []
   end
 
   def new_game
@@ -17,15 +16,15 @@ class Game
   end
 
   def move spot, move_symbol=self.current_player
-    new_board = gen_new_board(@board.state, spot, move_symbol)
+    new_board = gen_new_board(@board, spot, move_symbol)
     update_history @board
     @board = new_board
   end
 
-  def gen_new_board board_state, spot, move_symbol
-    new_board_state = board_state.dup
-    new_board_state[spot] = move_symbol
-    @board_class.new new_board_state
+  def gen_new_board board, spot, move_symbol
+    new_board = board.to_a
+    new_board[spot] = move_symbol
+    @board_class.new new_board
   end
 
   def legal_moves
@@ -36,17 +35,9 @@ class Game
     @history << board
   end
 
-  def undo
-    @redo_history << @history.pop
-    @board = @history.last
-  end
+  def winning? board=@board, move_symbol=@current_player
+    b = board.to_a
 
-  def redo
-    @history << @redo_history.pop
-    @board = @history.last
-  end
-
-  def winning? b, move_symbol
     [b[0], b[1], b[2]].uniq == [move_symbol] ||
     [b[3], b[4], b[5]].uniq == [move_symbol] ||
     [b[6], b[7], b[8]].uniq == [move_symbol] ||
@@ -58,7 +49,7 @@ class Game
   end
 
   def win?
-    winning?(@board.state, 'O') || winning?(@board.state, 'X')
+    winning?(@board.to_a, 'O') || winning?(@board.to_a, 'X')
   end
   
   def over?
@@ -71,7 +62,7 @@ class Game
   end
 
   def winner? mark
-    winning? @board.state, mark
+    winning? @board.to_a, mark
   end
 
 end

@@ -10,21 +10,21 @@ class TestGame < Minitest::Test
   end
 
   def test_game_board_initializes
-    assert_equal @game.board.state, (0..8).to_a 
+    assert_equal @game.board.to_a, (0..8).to_a 
   end
 
   def test_move_is_made_on_call
     @game.move(4, 'O')
-    assert_equal @game.board.state[4], 'O'
+    assert_equal @game.board.to_a[4], 'O'
     @game.move(5, 'X')
-    assert_equal @game.board.state[5], 'X'
+    assert_equal @game.board.to_a[5], 'X'
   end
 
   def test_move_automatically_sets_correct_mark
     @game.move(1)
-    assert_equal @game.board.state[1], 'O'
+    assert_equal @game.board.to_a[1], 'O'
     @game.move(2)
-    assert_equal @game.board.state[2], 'X'
+    assert_equal @game.board.to_a[2], 'X'
   end
 
   def test_game_updates_game_history
@@ -55,18 +55,4 @@ class TestGame < Minitest::Test
     assert_equal @game.over?, true
   end
 
-  def test_undo_works
-    @game.move(5)
-    @game.move(4)
-    @game.undo
-    assert_includes @game.legal_moves, 4
-  end
-
-  def test_redo_works
-    @game.move(5)
-    @game.move(4)
-    @game.undo
-    @game.redo
-    !assert_includes @game.legal_moves, 4
-  end
 end
