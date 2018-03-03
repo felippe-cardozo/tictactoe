@@ -1,4 +1,6 @@
 class Game
+# Game controller class where state changes are handled
+
   attr_accessor :board_class, :board
   attr_reader :current_player, :history
 
@@ -21,18 +23,8 @@ class Game
     @board = new_board
   end
 
-  def gen_new_board board, spot, move_symbol
-    new_board = board.to_a
-    new_board[spot] = move_symbol
-    @board_class.new new_board
-  end
-
   def legal_moves
     @board.avaiable_spots
-  end
-
-  def update_history board
-    @history << board
   end
 
   def winning? board=@board, move_symbol=@current_player
@@ -48,10 +40,6 @@ class Game
     [b[2], b[4], b[6]].uniq == [move_symbol]
   end
 
-  def win?
-    winning?(@board.to_a, 'O') || winning?(@board.to_a, 'X')
-  end
-  
   def over?
     win? || tie?
   end
@@ -65,4 +53,19 @@ class Game
     winning? @board.to_a, mark
   end
 
+  private
+
+    def gen_new_board board, spot, move_symbol
+      new_board = board.to_a
+      new_board[spot] = move_symbol
+      @board_class.new new_board
+    end
+
+    def update_history board
+      @history << board
+    end
+
+    def win?
+      winning?(@board.to_a, 'O') || winning?(@board.to_a, 'X')
+    end
 end
