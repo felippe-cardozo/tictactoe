@@ -23,33 +23,33 @@ class TestUI < Minitest::Test
 
   def test_ask_for_mode
     set_input 1
-    mode = @ui.ask_for_mode
+    mode = @ui.send :ask_for_mode
     clear_stdin
     assert_equal mode, 'PVC'
     set_input 2
-    assert_equal @ui.ask_for_mode, 'PVP'
+    assert_equal @ui.send(:ask_for_mode), 'PVP'
     clear_stdin
     set_input 3
-    assert_equal @ui.ask_for_mode, 'CVC'
+    assert_equal @ui.send(:ask_for_mode), 'CVC'
     clear_stdin
   end
 
   def test_ask_for_level
     set_input 'h'
-    assert_equal @ui.ask_for_level, 'HARD'
+    assert_equal @ui.send(:ask_for_level), 'HARD'
     clear_stdin
     set_input 'm'
-    assert_equal @ui.ask_for_level, 'MEDIUM'
+    assert_equal @ui.send(:ask_for_level), 'MEDIUM'
     clear_stdin
     set_input 'e'
-    assert_equal @ui.ask_for_level, 'EASY'
+    assert_equal @ui.send(:ask_for_level), 'EASY'
     clear_stdin
   end
 
   def test_ask_for_move
     (0..9).each do |n|
       set_input n
-      assert_equal @ui.ask_for_move, n
+      assert_equal @ui.send(:ask_for_move), n
       clear_stdin
     end
   end
