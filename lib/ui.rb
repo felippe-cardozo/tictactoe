@@ -1,4 +1,6 @@
 class UI
+# Command Line Interface to the tictactoe game
+
   attr_accessor :game, :player, :mode, :level
 
   def initialize game_class, board_class, player_class

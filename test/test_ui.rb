@@ -8,6 +8,7 @@ require_relative '../lib/ui'
 class TestUI < Minitest::Test
   def setup
     @ui = UI.new Game, Board, Player
+    # Kernel.stub :sleep
   end
 
   def set_input input

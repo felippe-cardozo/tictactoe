@@ -1,6 +1,6 @@
 class Game
-  attr_accessor :board_class, :board, :history
-  attr_reader :current_player
+  attr_accessor :board_class, :board
+  attr_reader :current_player, :history
 
   def initialize
     @history = []
