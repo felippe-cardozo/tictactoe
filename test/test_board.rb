@@ -24,7 +24,7 @@ class TestBoard < Minitest::Test
   end
 
   def test_board_validates_length
-    boards = [(0..7).to_a, [], (0..9).to_a]
+    boards = [(0..7).to_a, (0..9).to_a]
     boards.each do |i|
       assert_raises(TypeError) {Board.new(i)}
     end

@@ -1,39 +1,47 @@
 class Board
-  attr_reader :state
-  def initialize state=(0..8).to_a
-    valid? state
-    @state = state
+# Custom Array that takes an Array or Range as init parameter and
+# requires length of 9 and values in the range 0..8 or 'X', or 'O'
+
+  include Enumerable
+  attr_reader :cells
+
+  def initialize cells = []
+    @cells = []
+    cells.each {|i| @cells << i} 
+    @cells = (0..8).to_a if @cells.empty?
+    validate
   end
 
   def avaiable_spots
-    @state.select{|i| i.is_a? Integer}
-  end
-
-  def print
-    new_line = "\n===+===+===\n"
-    top = " " + @state[0..2].join(' | ') + " " + new_line
-    mid = " " + @state[3..5].join(' | ') + " " + new_line
-    bot = " " + @state[6..8].join(' | ') + " "
-    puts top + mid + bot
-    puts "\n"
+    @cells.select{|i| i.is_a? Integer}
   end
 
   private
-  def valid_len? arr
-    raise TypeError, 'Board must have 9 cells' unless arr.length == 9
-    true
-  end
-
-  def valid_contents? arr
-    unless arr.all? {|i| i == 'X' || i == 'O' || (0..8).include?(i)}
-      raise TypeError, 'Board Contents only acceps X, O or (0..8)'
+    def each
+      @cells.map {|i| yield i}
     end
-    true
-  end
 
-  def valid? state
-    valid_len? state
-    valid_contents? state
-    true
-  end
+    def to_s
+      new_line = "\n===+===+===\n"
+      top = " " + @cells[0..2].join(' | ') + " " + new_line
+      mid = " " + @cells[3..5].join(' | ') + " " + new_line
+      bot = " " + @cells[6..8].join(' | ') + " " + "\n"
+      return top + mid + bot
+    end
+
+    def validate
+      validate_len
+      validate_values
+    end
+
+    def validate_len
+      raise TypeError, 'Board must have 9 cells' unless self.count == 9
+    end
+
+    def validate_values
+      unless self.all? {|i| i == 'O' || i == 'X' || (0..8).include?(i)}
+        raise TypeError, "Board's values must be 'X', 'O' or (0..8)"
+      end
+    end
+
 end
