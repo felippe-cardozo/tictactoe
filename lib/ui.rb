@@ -129,7 +129,7 @@ class UI
     def ask_for_move
       puts "Choose your move:\n"
       move = get_user_input
-      ask_for_move unless ("0".."9").include? move
+      return ask_for_move unless ("0".."9").include? move
       move.to_i
     end
 end
