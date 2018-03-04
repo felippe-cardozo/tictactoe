@@ -36,8 +36,9 @@ class Player
     def win_next(board, player)
       best = nil
       board.avaiable_spots.each do |spot|
-        possible_board = @game.gen_new_board board, spot, player
-        return spot if @game.winning? possible_board, player
+        possible_game = @game.dup
+        possible_game.move(spot, player)
+        return spot if possible_game.winning? possible_game.board, player
       end
       return best
     end
