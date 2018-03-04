@@ -66,6 +66,7 @@ class UI
     def cvc
       until @game.over?
         print_state
+        puts "\n"
         sleep(1)
         make_comp_move
       end
@@ -89,7 +90,7 @@ class UI
         move = ask_for_move
         begin
           @game.move(move)
-        rescue TypeError
+        rescue MoveError
           puts "Invalid Move " + move.to_s
           move = nil
         end
@@ -109,7 +110,7 @@ class UI
         "2 = 'Player Vs Player'\n3 = 'Computer Vs Computer'"
       modes = {1 => 'PVC', 2 => 'PVP', 3 => 'CVC'}
       mode = get_user_input
-      ask_for_mode unless ('1'..'3').include? mode
+      return ask_for_mode unless ('1'..'3').include? mode
       return modes[mode.to_i]
     end
 
@@ -119,7 +120,9 @@ class UI
       levels = {'v' => 'VERY_HARD', 'h' => 'HARD',
                 'm' => 'MEDIUM', 'e' => 'EASY'}
       level = get_user_input
-      ask_for_level unless 'vhmeVHME'.include? level
+      unless 'vhmeVHME'.include? level
+        return ask_for_level
+      end
       return levels[level.downcase]
     end
 

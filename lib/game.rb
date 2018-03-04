@@ -18,6 +18,7 @@ class Game
   end
 
   def move spot, move_symbol=self.current_player
+    raise MoveError.new unless legal_moves.include? spot
     new_board = gen_new_board(@board, spot, move_symbol)
     update_history @board
     @board = new_board
@@ -69,3 +70,5 @@ class Game
       winning?(@board.to_a, 'O') || winning?(@board.to_a, 'X')
     end
 end
+
+class MoveError < StandardError; end
