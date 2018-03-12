@@ -1,9 +1,8 @@
-class UI
 # Command Line Interface to the tictactoe game
-
+class UI
   attr_accessor :game, :player, :mode, :level
 
-  def initialize game_class, board_class, player_class
+  def initialize(game_class, board_class, player_class)
     @game = game_class.new
     @board_class = board_class
     @player_class = player_class
@@ -24,7 +23,7 @@ class UI
     end
 
     def setup_player
-      @player = @player_class.new @game, @level 
+      @player = @player_class.new @game, @level
     end
 
     def handle_game_mode
@@ -46,9 +45,9 @@ class UI
         end
       end
       print_state
-      (puts "You Won!"; return) if @game.winner? 'O'
-      (puts "You Lost...";return) if @game.winner? 'X'
-      puts "Game ended in a Draw."
+      (puts 'You Won!'; return) if @game.winner? 'O'
+      (puts 'You Lost...'; return) if @game.winner? 'X'
+      puts 'Game ended in a Draw.'
     end
 
     def pvp
@@ -76,7 +75,7 @@ class UI
     end
 
     def print_commands
-      puts "Avaiable Moves: #{@game.legal_moves.to_s}\n"
+      puts "Avaiable Moves: #{@game.legal_moves}\n"
     end
 
     def make_comp_move
@@ -91,7 +90,7 @@ class UI
         begin
           @game.move(move)
         rescue MoveError
-          puts "Invalid Move " + move.to_s
+          puts 'Invalid Move ' + move.to_s
           move = nil
         end
       end
@@ -108,28 +107,26 @@ class UI
     def ask_for_mode
       puts "select a mode by number:\n1 = 'Player Vs Computer'\n"\
         "2 = 'Player Vs Player'\n3 = 'Computer Vs Computer'"
-      modes = {1 => 'PVC', 2 => 'PVP', 3 => 'CVC'}
+      modes = { 1 => 'PVC', 2 => 'PVP', 3 => 'CVC' }
       mode = get_user_input
-      return ask_for_mode unless ('1'..'3').include? mode
-      return modes[mode.to_i]
+      return ask_for_mode unless ('1'..'3').cover? mode
+      modes[mode.to_i]
     end
 
     def ask_for_level
       puts "select a difficult level\n'v' for Very Hard\n"\
         "'h' for Hard\n'm' for Medium\n'e' for Easy"
-      levels = {'v' => 'VERY_HARD', 'h' => 'HARD',
-                'm' => 'MEDIUM', 'e' => 'EASY'}
+      levels = { 'v' => 'VERY_HARD', 'h' => 'HARD',
+                 'm' => 'MEDIUM', 'e' => 'EASY' }
       level = get_user_input
-      unless 'vhmeVHME'.include? level
-        return ask_for_level
-      end
-      return levels[level.downcase]
+      return ask_for_level unless 'vhmeVHME'.include? level
+      levels[level.downcase]
     end
 
     def ask_for_move
       puts "Choose your move:\n"
       move = get_user_input
-      return ask_for_move unless ("0".."9").include? move
+      return ask_for_move unless ('0'..'9').cover? move
       move.to_i
     end
 end

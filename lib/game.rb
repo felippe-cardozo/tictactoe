@@ -1,8 +1,7 @@
-class Game
 # Game controller class where state changes are handled
-
+class Game
   attr_accessor :board_class, :board
-  attr_reader :current_player, :history
+  attr_reader :history
 
   def initialize
     @history = []
@@ -17,7 +16,7 @@ class Game
     legal_moves.length.even? ? 'X' : 'O'
   end
 
-  def move spot, move_symbol=self.current_player
+  def move(spot, move_symbol = current_player)
     raise MoveError.new unless legal_moves.include? spot
     new_board = gen_new_board(@board, spot, move_symbol)
     update_history @board
@@ -28,9 +27,8 @@ class Game
     @board.avaiable_spots
   end
 
-  def winning? board=@board, move_symbol=@current_player
+  def winning?(board = @board, move_symbol = @current_player)
     b = board.to_a
-
     [b[0], b[1], b[2]].uniq == [move_symbol] ||
     [b[3], b[4], b[5]].uniq == [move_symbol] ||
     [b[6], b[7], b[8]].uniq == [move_symbol] ||
@@ -50,19 +48,19 @@ class Game
     legal_moves.empty?
   end
 
-  def winner? mark
+  def winner?(mark)
     winning? @board.to_a, mark
   end
 
   private
 
-    def gen_new_board board, spot, move_symbol
+    def gen_new_board(board, spot, move_symbol)
       new_board = board.to_a
       new_board[spot] = move_symbol
       @board_class.new new_board
     end
 
-    def update_history board
+    def update_history(board)
       @history << board
     end
 
@@ -71,4 +69,5 @@ class Game
     end
 end
 
-class MoveError < StandardError; end
+class MoveError < StandardError
+end
